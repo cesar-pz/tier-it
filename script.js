@@ -90,20 +90,29 @@ function setupDragAndDrop() {
     const allDropZones = [...tierContainers, itemsPool];
     
     allDropZones.forEach(zone => {
-        zone.addEventListener('dragover', (e) => {
+        let dragCounter = 0;
+        
+        zone.addEventListener('dragenter', (e) => {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
+            dragCounter++;
             zone.classList.add('drag-over');
         });
         
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        });
+        
         zone.addEventListener('dragleave', (e) => {
-            if (e.target === zone) {
+            dragCounter--;
+            if (dragCounter === 0) {
                 zone.classList.remove('drag-over');
             }
         });
         
         zone.addEventListener('drop', (e) => {
             e.preventDefault();
+            dragCounter = 0;
             zone.classList.remove('drag-over');
             
             if (draggedElement && zone !== draggedElement.parentElement) {
@@ -294,37 +303,30 @@ function compareSelectedLists() {
 // Calculate similarity score between two tier lists
 function calculateSimilarity(tierList1, tierList2) {
     const tiers = ['S', 'A', 'B', 'C', 'F', 'Never'];
-    let totalMatches = 0;
-    let totalItems = 0;
     
-    // Count matching placements
+    // Collect all unique items from both lists
+    const allItems = new Set();
     tiers.forEach(tier => {
-        const items1 = tierList1[tier] || [];
-        const items2 = tierList2[tier] || [];
+        (tierList1[tier] || []).forEach(item => allItems.add(item));
+        (tierList2[tier] || []).forEach(item => allItems.add(item));
+    });
+    
+    if (allItems.size === 0) return 100;
+    
+    // Count items in the same tier in both lists
+    let matches = 0;
+    tiers.forEach(tier => {
+        const items1 = new Set(tierList1[tier] || []);
+        const items2 = new Set(tierList2[tier] || []);
         
         items1.forEach(item => {
-            totalItems++;
-            if (items2.includes(item)) {
-                totalMatches++;
+            if (items2.has(item)) {
+                matches++;
             }
         });
     });
     
-    // Also count items in list2 that weren't in list1
-    tiers.forEach(tier => {
-        const items1 = tierList1[tier] || [];
-        const items2 = tierList2[tier] || [];
-        
-        items2.forEach(item => {
-            if (!items1.includes(item)) {
-                totalItems++;
-            }
-        });
-    });
-    
-    if (totalItems === 0) return 100;
-    
-    return (totalMatches / totalItems) * 100;
+    return (matches / allItems.size) * 100;
 }
 
 // Generate detailed comparison
