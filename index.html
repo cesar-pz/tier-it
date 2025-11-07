@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tier It - Daily Tier List Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tier It</h1>
+            <p class="subtitle">Daily Tier List - Rank Your Favorites</p>
+        </header>
+
+        <main>
+            <div class="controls">
+                <button id="saveBtn" class="btn btn-primary">Save Tier List</button>
+                <button id="compareBtn" class="btn btn-secondary">Compare Lists</button>
+                <button id="resetBtn" class="btn btn-danger">Reset</button>
+            </div>
+
+            <div class="tier-grid-container">
+                <div class="tier-grid">
+                    <div class="tier-row" data-tier="S">
+                        <div class="tier-label tier-s">S</div>
+                        <div class="tier-items" data-tier="S"></div>
+                    </div>
+                    <div class="tier-row" data-tier="A">
+                        <div class="tier-label tier-a">A</div>
+                        <div class="tier-items" data-tier="A"></div>
+                    </div>
+                    <div class="tier-row" data-tier="B">
+                        <div class="tier-label tier-b">B</div>
+                        <div class="tier-items" data-tier="B"></div>
+                    </div>
+                    <div class="tier-row" data-tier="C">
+                        <div class="tier-label tier-c">C</div>
+                        <div class="tier-items" data-tier="C"></div>
+                    </div>
+                    <div class="tier-row" data-tier="F">
+                        <div class="tier-label tier-f">F</div>
+                        <div class="tier-items" data-tier="F"></div>
+                    </div>
+                    <div class="tier-row" data-tier="Never">
+                        <div class="tier-label tier-never">Never</div>
+                        <div class="tier-items" data-tier="Never"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="items-pool-container">
+                <h2>Available Items</h2>
+                <div id="itemsPool" class="items-pool"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="compareModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Compare Tier Lists</h2>
+            <div class="saved-lists-container">
+                <div class="saved-list-column">
+                    <h3>Saved Lists</h3>
+                    <div id="savedListsContainer"></div>
+                </div>
+                <div class="comparison-column">
+                    <h3>Comparison Result</h3>
+                    <div id="comparisonResult"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
